@@ -1,0 +1,41 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8080:80"
+    environment:
+      APP_ENV: prod
+      APP_DEBUG: "0"
+      APP_SECRET: blissim-test-yannick
+      DB_HOST: database
+      DB_PORT: "3306"
+      DB_NAME: blissim
+      DB_USER: blissim
+      DB_PASSWORD: blissim
+      PRODUCTS_API_URL: https://fakestoreapi.com/products
+    depends_on:
+      database:
+        condition: service_healthy
+
+  database:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: blissim
+      MYSQL_USER: blissim
+      MYSQL_PASSWORD: blissim
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"   # 3307 côté Mac : le 3306 est utilisé par le conteneur blissim-mysql
+    volumes:
+      - db_data:/var/lib/mysql
+      # Chargés automatiquement au premier démarrage, par ordre alphabétique
+      - ./blissim.sql:/docker-entrypoint-initdb.d/01_blissim.sql:ro
+      - ./sql/comments.sql:/docker-entrypoint-initdb.d/02_comments.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  db_data:

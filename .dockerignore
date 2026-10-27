@@ -1,0 +1,8 @@
+.git
+vendor
+var
+.env.local
+.env.*.local
+docker-compose.override.yml
+.idea
+.vscode
