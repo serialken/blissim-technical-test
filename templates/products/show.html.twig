@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ product.title }}{% endblock %}
+
+{% block body %}
+    <a href="{{ path('product_index') }}" class="d-inline-block mb-3">&larr; Tous les produits</a>
+
+    <div class="card mb-4">
+        <div class="row g-0">
+            <div class="col-md-4 p-4 text-center">
+                <img src="{{ product.image }}" alt="{{ product.title }}" class="img-fluid" style="max-height: 300px;">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <p class="small text-muted mb-1">{{ product.category }}</p>
+                    <h1 class="h4">{{ product.title }}</h1>
+                    <p class="h5 my-3">{{ product.price|number_format(2, ',', ' ') }} $</p>
+                    <p class="mb-0">{{ product.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="h5 mb-3">Commentaires ({{ comments|length }})</h2>
+
+    {% for comment in comments %}
+        <div class="card mb-2">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <strong>{{ comment.author }}</strong>
+                        <span class="small text-muted">
+                            le {{ comment.createdAt|date('d/m/Y à H:i') }}
+                            {% if comment.edited %}(modifié){% endif %}
+                        </span>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a href="{{ path('comment_edit', {productId: product.id, id: comment.id}) }}" class="btn btn-link btn-sm p-0">Modifier</a>
+                        <form method="post" action="{{ path('comment_delete', {productId: product.id, id: comment.id}) }}" onsubmit="return confirm('Supprimer ce commentaire ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete-comment-' ~ comment.id) }}">
+                            <button type="submit" class="btn btn-link btn-sm p-0 text-danger">Supprimer</button>
+                        </form>
+                    </div>
+                </div>
+                <p class="mb-0 mt-2">{{ comment.content|nl2br }}</p>
+            </div>
+        </div>
+    {% else %}
+        <p class="text-muted">Aucun commentaire pour ce produit. Soyez le premier !</p>
+    {% endfor %}
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <h3 class="h6 mb-3">Ajouter un commentaire</h3>
+            {{ include('comments/_form.html.twig', {
+                action: path('comment_create', {productId: product.id}),
+                submit_label: 'Publier',
+            }) }}
+        </div>
+    </div>
+{% endblock %}

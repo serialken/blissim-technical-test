@@ -1,0 +1,24 @@
+{# Expects: action, submit_label, input (App\Dto\CommentInput), errors (field => message) #}
+<form method="post" action="{{ action }}" novalidate>
+    <input type="hidden" name="_token" value="{{ csrf_token('comment') }}">
+
+    <div class="mb-3">
+        <label for="comment_author" class="form-label">Nom</label>
+        <input type="text" id="comment_author" name="author" value="{{ input.author }}" maxlength="100" required
+               class="form-control{{ errors.author is defined ? ' is-invalid' }}">
+        {% if errors.author is defined %}
+            <div class="invalid-feedback">{{ errors.author }}</div>
+        {% endif %}
+    </div>
+
+    <div class="mb-3">
+        <label for="comment_content" class="form-label">Commentaire</label>
+        <textarea id="comment_content" name="content" rows="4" maxlength="2000" required
+                  class="form-control{{ errors.content is defined ? ' is-invalid' }}">{{ input.content }}</textarea>
+        {% if errors.content is defined %}
+            <div class="invalid-feedback">{{ errors.content }}</div>
+        {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">{{ submit_label }}</button>
+</form>
