@@ -33,7 +33,9 @@ services:
       - ./sql/comments.sql:/docker-entrypoint-initdb.d/02_comments.sql:ro
       - ./sql/test_database.sql:/docker-entrypoint-initdb.d/03_test_database.sql:ro
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      # TCP, not the socket: during the first start, MySQL runs the init scripts on a
+      # temporary server without networking, so the base is only "healthy" once they are loaded
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
       interval: 5s
       timeout: 5s
       retries: 20
