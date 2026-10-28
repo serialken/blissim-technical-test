@@ -1,10 +1,10 @@
 # Image PHP + Apache pour l'application Symfony
 FROM php:8.5.12-apache
 
-# Dépendances système et extensions PHP
+# Dépendances système et extensions PHP (OPcache est intégré à PHP depuis la 8.5)
 RUN apt-get update \
     && apt-get install -y --no-install-recommends git unzip libicu-dev libzip-dev \
-    && docker-php-ext-install pdo_mysql intl zip opcache \
+    && docker-php-ext-install pdo_mysql intl zip \
     && rm -rf /var/lib/apt/lists/*
 
 # Composer
