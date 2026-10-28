@@ -29,7 +29,8 @@ CREATE TABLE comments (
 -- Quelques commentaires de démonstration (produits 1 et 2 de l'API)
 -- ---------------------------------------------------------------------
 
-INSERT INTO comments (product_id, author, content, created_at) VALUES
-    (1, 'Camille', 'Très bonne qualité, conforme à la description.', NOW() - INTERVAL 2 DAY),
-    (1, 'Léa',     'Livraison rapide, je recommande.',               NOW() - INTERVAL 1 DAY),
-    (2, 'Sarah',   'Bon rapport qualité-prix.',                      NOW() - INTERVAL 3 HOUR);
+-- updated_at = created_at : ces commentaires n'ont jamais été modifiés
+INSERT INTO comments (product_id, author, content, created_at, updated_at) VALUES
+    (1, 'Camille', 'Très bonne qualité, conforme à la description.', NOW() - INTERVAL 2 DAY,  NOW() - INTERVAL 2 DAY),
+    (1, 'Léa',     'Livraison rapide, je recommande.',               NOW() - INTERVAL 1 DAY,  NOW() - INTERVAL 1 DAY),
+    (2, 'Sarah',   'Bon rapport qualité-prix.',                      NOW() - INTERVAL 3 HOUR, NOW() - INTERVAL 3 HOUR);

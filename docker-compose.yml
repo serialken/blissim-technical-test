@@ -12,7 +12,7 @@ services:
       DB_NAME: blissim
       DB_USER: blissim
       DB_PASSWORD: blissim
-      PRODUCTS_API_URL: https://fakestoreapi.com/products
+      PRODUCTS_API_URL: https://fakestoreapi.com
     depends_on:
       database:
         condition: service_healthy

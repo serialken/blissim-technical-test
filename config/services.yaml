@@ -21,15 +21,16 @@ services:
             - '%env(DB_PASSWORD)%'
             - !php/const PDO::ATTR_ERRMODE: !php/const PDO::ERRMODE_EXCEPTION
               !php/const PDO::ATTR_DEFAULT_FETCH_MODE: !php/const PDO::FETCH_ASSOC
+              !php/const PDO::ATTR_EMULATE_PREPARES: false
 
     # makes classes in src/ available to be used as services
-    App\Service\ProductApiClient:
-        arguments:
-            $baseUrl: '%env(PRODUCTS_API_URL)%'
-
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/'
+
+    App\Service\ProductApiClient:
+        arguments:
+            $baseUrl: '%env(PRODUCTS_API_URL)%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
