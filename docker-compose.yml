@@ -31,6 +31,7 @@ services:
       # Chargés automatiquement au premier démarrage, par ordre alphabétique
       - ./blissim.sql:/docker-entrypoint-initdb.d/01_blissim.sql:ro
       - ./sql/comments.sql:/docker-entrypoint-initdb.d/02_comments.sql:ro
+      - ./sql/test_database.sql:/docker-entrypoint-initdb.d/03_test_database.sql:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
       interval: 5s
